@@ -1,0 +1,19 @@
+services:
+  # === Backend (Node.js API) ===
+  - type: web
+    name: hunter-forum
+    env: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+
+  # === Frontend (Static Site) ===
+  - type: static
+    name: hunter-forum-static
+    env: static
+    plan: free
+    buildCommand: ""            # no build step, just serve files
+    publishPath: ./public       # serves public/index.html and assets
