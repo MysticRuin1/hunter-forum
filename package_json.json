@@ -1,0 +1,20 @@
+{
+  "name": "hunter-net-forum",
+  "version": "1.0.0",
+  "description": "Private Hunter: The Reckoning forum with persistent browser storage",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["hunter", "forum", "gaming", "world-of-darkness"],
+  "author": "Hunter Network Administrator",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "compression": "^1.7.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

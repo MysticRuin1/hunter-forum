@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Liberty - Digital Rights & Privacy</title>
+    <meta name="description" content="Defending Digital Rights in the Information Age">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff41;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* Matrix background animation */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #003300;
+            font-size: 14px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Notification system */
+        .notification-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background: #1a1a1a;
+            border: 1px solid #00ff41;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #00ff41;
+            cursor: pointer;
+            max-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.error {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .notification.success {
+            border-color: #44ff44;
+            color: #44ff44;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Decoy site styles */
+        .decoy-header {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            padding: 20px;
+            border-bottom: 2px solid #00ff41;
+            text-align: center;
+        }
+
+        .decoy-logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .decoy-tagline {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .decoy-nav {
+            background: #1a1a1a;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-links {
+            display: inline-flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #00ff41;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            border-color: #00ff41;
+            box-shadow: 0 0 5px #00ff41;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .decoy-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .article {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            height: fit-content;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ff41;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #00ff41;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn {
+            background: #003300;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        .btn-danger {
+            background: #660000;
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .btn-danger:hover {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #333;
+            border-color: #666;
+            color: #ccc;
+        }
+
+        .btn-secondary:hover {
+            background: #666;
+            color: #fff;
+        }
+
+        /* Tab system for login/register */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .auth-tab {
+            background: none;
+            border: none;
+            color: #666;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: #00ff41;
+            border-bottom-color: #00ff41;
+        }
+
+        .auth-tab:hover {
+            color: #00ff41;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        /* Hunter-Net Forum Styles */
+        .hunter-app {
+            display: none;
+            min-height: 100vh;
+            background: #0a0a0a;
+        }
+
+        .hunter-header {
+            background: linear-gradient(135deg, #1a0000, #330000);
+            border-bottom: 2px solid #ff4444;
+            padding: 15px 0;
+        }
+
+        .hunter-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hunter-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hunter-glyphs {
+            font-size: 1.5em;
+            color: #ff4444;
+        }
+
+        .hunter-title {
+            color: #ff4444;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ff4444;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        .user-stats {
+            background: #330000;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #ff4444;
+        }
+
+        /* Forum Navigation */
+        .forum-nav {
+            background: #220000;
+            border-bottom: 1px solid #ff4444;
+            padding: 10px 0;
+        }
+
+        .breadcrumb {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .breadcrumb a {
+            color: #ff4444;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Forum Structure */
+        .forum-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .forum-section {
+            background: #1a0000;
+            border: 1px solid #ff4444;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .forum-section-header {
+            background: #330000;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ff4444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forum-section-title {
+            color: #ff4444;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .forum-section-stats {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        /* Thread List */
+        .thread-list {
+            border-collapse: collapse;
+            width: 100%;
+            background: #0a0000;
+        }
+
+        .thread-list th {
+            background: #220000;
+            color: #ff4444;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ff4444;
+            font-weight: bold;
+        }
+
+        .thread-list td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #330000;
+            vertical-align: top;
+        }
+
+        .thread-list tr:hover {
+            background: #110000;
+        }
+
+        .thread-list .sticky-thread {
+            background: #1a1100 !important;
+            border-left: 3px solid #ffaa00;
+        }
+
+        .thread-list .locked-thread {
+            opacity: 0.6;
+        }
+
+        .thread-title {
+            color: #ff4444;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .thread-title:hover {
+            color: #ff6666;
+            text-decoration: underline;
+        }
+
+        .thread-meta {
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .thread-signal {
+            background: #ff4444;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-right: 5px;
+            text-transform: uppercase;
+        }
+
+        .thread-signal.sighting { background: #ff0000; color: #fff; }
+        .thread-signal.intel { background: #0066ff; color: #fff; }
+        .thread-signal.request-aid { background: #ff6600; color: #fff; }
+        .thread-signal.after-action { background: #00aa00; color: #fff; }
+        .thread-signal.caution { background: #ffaa00; color: #000; }
+
+        .post-count {
+            text-align: center;
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .last-post {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .last-post a {
+            color: #ff4444;
+            text-decoration: none;
+        }
+
+        .last-post a:hover {
+            text-decoration: underline;
+        }
+
+        /* Thread View */
+        .thread-view {
+            background: #1a0000;
+            border: 1px solid #ff4444;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .thread-header {
+            background: #330000;
+            padding: 20px;
+            border-bottom: 1px solid #ff4444;
+        }
+
+        .thread-title-full {
+            color: #ff4444;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .thread-info {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        /* Post Styles */
+        .post {
+            display: flex;
+            border-bottom: 1px solid #330000;
+            background: #0a0000;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+
+        .post-sidebar {
+            width: 200px;
+            background: #110000;
+            border-right: 1px solid #330000;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .post-author {
+            color: #ff4444;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .post-user-info {
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: #330000;
+            border: 1px solid #ff4444;
+            border-radius: 3px;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff4444;
+            font-size: 1.5em;
+        }
+
+        .post-content {
+            flex: 1;
+            padding: 15px 20px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .post-body {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .post-actions a {
+            color: #888;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .post-actions a:hover {
+            color: #ff4444;
+        }
+
+        /* New Thread/Reply Forms */
+        .compose-form {
+            background: #1a0000;
+            border: 1px solid #ff4444;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .compose-form h3 {
+            color: #ff4444;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #330000;
+            padding-bottom: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .compose-form input, .compose-form textarea, .compose-form select {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a0a;
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .compose-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            background: #1a0000;
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .pagination a:hover {
+            background: #330000;
+        }
+
+        .pagination .current {
+            background: #ff4444;
+            color: #000;
+        }
+
+        /* Quick Reply */
+        .quick-reply {
+            background: #0a0000;
+            border: 1px solid #550000;
+            border-radius: 3px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .quick-reply h4 {
+            color: #ff4444;
+            margin-bottom: 10px;
+        }
+
+        /* User badges */
+        .user-badge {
+            background: #ff4444;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 0.7em;
+            margin-left: 5px;
+        }
+
+        .user-badge.admin {
+            background: #ffaa00;
+        }
+
+        .user-badge.mod {
+            background: #00aaff;
+        }
+
+        /* Online status */
+        .online-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff00;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .online-status.offline {
+            background: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .decoy-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .post {
+                flex-direction: column;
+            }
+            
+            .post-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #330000;
+            }
+
+            .thread-list {
+                font-size: 0.9em;
+            }
+
+            .thread-list th:nth-child(3),
+            .thread-list th:nth-child(4),
+            .thread-list td:nth-child(3),
+            .thread-list td:nth-child(4) {
+                display: none;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-online { background: #00ff00; }
+        .status-away { background: #ffaa00; }
+        .status-offline { background: #666; }
+
+        /* Back button */
+        .back-btn {
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Help text */
+        .help-text {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notification-panel"></div>
+
+    <!-- Matrix Background Animation -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <!-- Decoy Site -->
+    <div id="decoy-site">
+        <header class="decoy-header">
+            <div class="decoy-logo">Anonymous Liberty</div>
+            <div class="decoy-tagline">Defending Digital Rights in the Information Age</div>
+        </header>
+
+        <nav class="decoy-nav">
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#">About</a>
+                <a href="#">Resources</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="decoy-content">
+                <main>
+                    <article class="article">
+                        <h2>Protecting Privacy in the Digital Age</h2>
+                        <div style="color: #666; font-size: 0.9em; margin-bottom: 15px;">Posted on March 15, 2002 by Witness1</div>
+                        <p>In an era where digital surveillance has become ubiquitous, protecting personal privacy has never been more critical. Our organization works tirelessly to educate individuals about their digital rights and provide tools for maintaining anonymity online.</p>
+                        <p>From secure communication protocols to anonymous browsing techniques, we offer comprehensive resources for those seeking to reclaim their digital freedom.</p>
+                    </article>
+
+                    <article class="article">
+                        <h2>New Encryption Standards Released</h2>
+                        <div style="color: #666; font-size: 0.9em; margin-bottom: 15px;">Posted on March 10, 2002 by TechTeam</div>
+                        <p>We're excited to announce the release of our latest encryption protocols, designed to provide military-grade security for everyday communications.</p>
+                        <p>All protocols are open-source and have been audited by independent security firms.</p>
+                    </article>
+                </main>
+
+                <aside class="sidebar">
+                    <h3 style="color: #00ff41; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">Member Access Portal</h3>
+                    <p>Verified members can access the secure portal. New users must complete the verification process.</p>
+                    
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                        <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <div id="login-form" class="auth-form active">
+                        <form id="gateway-form">
+                            <div class="form-group">
+                                <label for="username">Handle:</label>
+                                <input type="text" id="username" name="username" required placeholder="Enter your handle">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Access Code:</label>
+                                <input type="password" id="password" name="password" required placeholder="Authentication required">
+                            </div>
+                            <button type="submit" class="btn">Access Portal</button>
+                        </form>
+                        
+                        <div id="challenge-section" class="hidden" style="margin-top: 20px;">
+                            <h4 style="color: #ffaa00;">Identity Verification</h4>
+                            <p style="color: #888; font-size: 0.9em;">Answer the security question to complete authentication:</p>
+                            <div class="form-group">
+                                <label id="challenge-question" style="color: #ffaa00;"></label>
+                                <input type="text" id="challenge-answer" placeholder="Enter your answer" style="border-color: #ffaa00;">
+                            </div>
+                            <button onclick="verifyChallenge()" class="btn">Verify Identity</button>
+                        </div>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <div id="register-form" class="auth-form">
+                        <form id="registration-form">
+                            <div class="form-group">
+                                <label for="reg-handle">Hunter Handle:</label>
+                                <input type="text" id="reg-handle" name="handle" required placeholder="Choose your handle" minlength="3" maxlength="20">
+                                <div class="help-text">3-20 characters, alphanumeric only</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Access Code:</label>
+                                <input type="password" id="reg-password" name="password" required placeholder="Create secure password" minlength="6">
+                                <div class="help-text">Minimum 6 characters</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password-confirm">Confirm Access Code:</label>
+                                <input type="password" id="reg-password-confirm" name="password_confirm" required placeholder="Confirm your password">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-challenge">Security Question:</label>
+                                <select id="reg-challenge-q" required>
+                                    <option value="">Choose a security question</option>
+                                    <option value="What year did the Network go live?">What year did the Network go live?</option>
+                                    <option value="What hunts the hunters?">What hunts the hunters?</option>
+                                    <option value="What is the first rule of hunter operations?">What is the first rule of hunter operations?</option>
+                                    <option value="What do we hunt?">What do we hunt?</option>
+                                    <option value="When do we strike?">When do we strike?</option>
+                                    <option value="What protects us from the darkness?">What protects us from the darkness?</option>
+                                    <option value="Who can you trust?">Who can you trust?</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-answer">Security Answer:</label>
+                                <input type="text" id="reg-answer" name="answer" required placeholder="Your security answer" minlength="3">
+                                <div class="help-text">Keep this secret - you'll need it to log in</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-location">Operating Region (Optional):</label>
+                                <input type="text" id="reg-location" name="location" placeholder="City, State/Region">
+                                <div class="help-text">Helps coordinate local operations</div>
+                            </div>
+                            <button type="submit" class="btn">Register Hunter</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hunter-Net Forum Application -->
+    <div id="hunter-app" class="hunter-app">
+        <header class="hunter-header">
+            <div class="hunter-header-content">
+                <div class="hunter-logo">
+                    <div class="hunter-glyphs">◊ ◊ ◊</div>
+                    <div class="hunter-title">HUNTER-NET</div>
+                </div>
+                <div class="user-info">
+                    <div class="user-stats">
+                        <span style="color: #ffaa00;">User:</span> <span id="current-user"></span>
+                    </div>
+                    <div class="user-stats">
+                        <span style="color: #ffaa00;">Cred:</span> <span id="user-cred">0</span>
+                    </div>
+                    <div class="user-stats">
+                        <span style="color: #ffaa00;">Posts:</span> <span id="user-posts">0</span>
+                    </div>
+                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="forum-nav">
+            <div class="breadcrumb" id="breadcrumb">
+                <a href="#" onclick="showForumIndex()">Hunter-Net</a>
+            </div>
+        </nav>
+
+        <main class="forum-container">
+            <!-- Forum Index -->
+            <div id="forum-index">
+                <!-- Main Discussion -->
+                <div class="forum-section">
+                    <div class="forum-section-header">
+                        <div class="forum-section-title">Main Discussion Board</div>
+                        <div class="forum-section-stats">
+                            <span id="main-thread-count">0</span> threads, 
+                            <span id="main-post-count">0</span> posts
+                        </div>
+                    </div>
+                    <table class="thread-list">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Thread</th>
+                                <th style="width: 15%; text-align: center;">Posts</th>
+                                <th style="width: 15%; text-align: center;">Views</th>
+                                <th style="width: 20%;">Last Post</th>
+                            </tr>
+                        </thead>
+                        <tbody id="main-threads"></tbody>
+                    </table>
+                </div>
+
+                <!-- Sighting Reports -->
+                <div class="forum-section">
+                    <div class="forum-section-header">
+                        <div class="forum-section-title">Sighting Reports</div>
+                        <div class="forum-section-stats">
+                            <span id="sighting-thread-count">0</span> threads, 
+                            <span id="sighting-post-count">0</span> posts
+                        </div>
+                    </div>
+                    <table class="thread-list">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Report</th>
+                                <th style="width: 15%; text-align: center;">Posts</th>
+                                <th style="width: 15%; text-align: center;">Views</th>
+                                <th style="width: 20%;">Last Post</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sighting-threads"></tbody>
+                    </table>
+                </div>
+
+                <!-- Intelligence Database -->
+                <div class="forum-section">
+                    <div class="forum-section-header">
+                        <div class="forum-section-title">Intelligence Database</div>
+                        <div class="forum-section-stats">
+                            <span id="intel-thread-count">0</span> threads, 
+                            <span id="intel-post-count">0</span> posts
+                        </div>
+                    </div>
+                    <table class="thread-list">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Intelligence</th>
+                                <th style="width: 15%; text-align: center;">Posts</th>
+                                <th style="width: 15%; text-align: center;">Views</th>
+                                <th style="width: 20%;">Last Post</th>
+                            </tr>
+                        </thead>
+                        <tbody id="intel-threads"></tbody>
+                    </table>
+                </div>
+
+                <!-- New Thread Button -->
+                <div style="margin: 20px 0; text-align: center;">
+                    <button class="btn" onclick="showNewThreadForm('main')">Create New Thread</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Browser Storage Data Management
+        class HunterNetStorage {
+            constructor() {
+                this.initializeStorage();
+            }
+
+            initializeStorage() {
+                // Initialize default data if not exists
+                if (!localStorage.getItem('hunterNet_users')) {
+                    const defaultUsers = {
+                        'witness1': { 
+                            id: 'witness1',
+                            password: 'firstsight', 
+                            challenge: 'What year did the Network go live?', 
+                            answer: '1999',
+                            cred: 150,
+                            posts: 23,
+                            location: 'Boston, MA',
+                            joinDate: '1999-03-15',
+                            lastActive: new Date().toISOString(),
+                            role: 'admin'
+                        },
+                        'shadow7': { 
+                            id: 'shadow7',
+                            password: 'huntress', 
+                            challenge: 'What hunts the hunters?', 
+                            answer: 'fear',
+                            cred: 89,
+                            posts: 45,
+                            location: 'Chicago, IL',
+                            joinDate: '2000-01-20',
+                            lastActive: new Date().toISOString(),
+                            role: 'user'
+                        },
+                        'digitalghost': { 
+                            id: 'digitalghost',
+                            password: 'vanish', 
+                            challenge: 'What is the first rule of hunter operations?', 
+                            answer: 'never hunt alone',
+                            cred: 234,
+                            posts: 67,
+                            location: 'Seattle, WA',
+                            joinDate: '1999-12-03',
+                            lastActive: new Date().toISOString(),
+                            role: 'moderator'
+                        }
+                    };
+                    localStorage.setItem('hunterNet_users', JSON.stringify(defaultUsers));
+                }
+
+                if (!localStorage.getItem('hunterNet_threads')) {
+                    const defaultThreads = [
+                        {
+                            id: this.generateId(),
+                            title: "Welcome to Hunter-Net 2.0",
+                            author: "witness1",
+                            category: "main",
+                            content: "Welcome to the new Hunter-Net platform. This secure communication system allows verified hunters to share intelligence, coordinate operations, and maintain contact with the network.\n\nRemember: OPSEC is paramount. Never reveal real names, locations, or operational details that could compromise our security.",
+                            signal: null,
+                            posts: [],
+                            views: 234,
+                            created: new Date('2002-03-15T10:30:00').toISOString(),
+                            lastActivity: new Date().toISOString(),
+                            sticky: true,
+                            locked: false
+                        },
+                        {
+                            id: this.generateId(),
+                            title: "Operational Security Guidelines - READ FIRST",
+                            author: "digitalghost",
+                            category: "main",
+                            content: "MANDATORY READING FOR ALL HUNTERS:\n\n1. Never use real names or identifying information\n2. All communications are encrypted but still use code words\n3. Location references should be vague (\"Northeast Urban Area\")\n4. Report suspicious activity immediately\n5. Verify all contacts through established protocols\n\nViolation of OPSEC puts the entire network at risk.",
+                            signal: null,
+                            posts: [
+                                {
+                                    id: this.generateId(),
+                                    author: "shadow7",
+                                    content: "Adding to this - never access Hunter-Net from compromised locations. Use public terminals or secured connections only.",
+                                    created: new Date('2002-03-16T14:20:00').toISOString()
+                                }
+                            ],
+                            views: 156,
+                            created: new Date('2002-03-15T11:15:00').toISOString(),
+                            lastActivity: new Date('2002-03-16T14:20:00').toISOString(),
+                            sticky: true,
+                            locked: false
+                        },
+                        {
+                            id: this.generateId(),
+                            title: "Strange Activity - Downtown Chicago",
+                            author: "shadow7",
+                            category: "sightings",
+                            content: "Multiple witnesses report unusual behavior in the financial district. Subjects moving in coordinated patterns, avoid eye contact, always in groups of 3-5. Possible supernatural involvement.\n\nRequest backup for investigation. Will maintain surveillance from safe distance.",
+                            signal: "sighting",
+                            posts: [
+                                {
+                                    id: this.generateId(),
+                                    author: "digitalghost",
+                                    content: "I can provide remote support. Uploading surveillance protocols to your secure drop.",
+                                    created: new Date().toISOString()
+                                }
+                            ],
+                            views: 89,
+                            created: new Date('2002-03-17T09:45:00').toISOString(),
+                            lastActivity: new Date().toISOString(),
+                            sticky: false,
+                            locked: false
+                        },
+                        {
+                            id: this.generateId(),
+                            title: "Confirmed: Vampire Nest - Boston Common",
+                            author: "witness1",
+                            category: "sightings",
+                            content: "CONFIRMED THREAT: Vampire nest identified in abandoned subway tunnels beneath Boston Common. Multiple hostiles, estimated 8-12 individuals.\n\nDO NOT APPROACH ALONE. Coordinating with local cells for elimination operation. Will update with mission parameters.",
+                            signal: "sighting",
+                            posts: [
+                                {
+                                    id: this.generateId(),
+                                    author: "shadow7",
+                                    content: "Can provide additional firepower if needed. Standing by for orders.",
+                                    created: new Date().toISOString()
+                                }
+                            ],
+                            views: 145,
+                            created: new Date('2002-03-16T20:30:00').toISOString(),
+                            lastActivity: new Date().toISOString(),
+                            sticky: false,
+                            locked: false
+                        },
+                        {
+                            id: this.generateId(),
+                            title: "Vampire Weaknesses Compendium",
+                            author: "digitalghost",
+                            category: "intel",
+                            content: "Compiled intelligence on vampire vulnerabilities:\n\nCONFIRMED:\n- Sunlight: Fatal exposure within minutes\n- Wooden stakes: Through heart, instant termination\n- Holy water: Severe burns, temporary incapacitation\n- Silver: Painful but not fatal\n- Running water: Cannot cross without assistance\n\nUNCONFIRMED:\n- Garlic: Anecdotal evidence only\n- Mirrors: Some strains show no reflection\n- Crosses: Effectiveness varies by faith of wielder",
+                            signal: "intel",
+                            posts: [
+                                {
+                                    id: this.generateId(),
+                                    author: "witness1",
+                                    content: "Can confirm holy water effectiveness. Tested in Boston operations. Recommend blessed ammunition for ranged engagement.",
+                                    created: new Date().toISOString()
+                                }
+                            ],
+                            views: 267,
+                            created: new Date('2002-03-14T16:20:00').toISOString(),
+                            lastActivity: new Date().toISOString(),
+                            sticky: false,
+                            locked: false
+                        }
+                    ];
+                    localStorage.setItem('hunterNet_threads', JSON.stringify(defaultThreads));
+                }
+
+                if (!localStorage.getItem('hunterNet_settings')) {
+                    const defaultSettings = {
+                        version: '2.0',
+                        lastMaintenance: new Date().toISOString(),
+                        activeUsers: 0,
+                        totalPosts: 0
+                    };
+                    localStorage.setItem('hunterNet_settings', JSON.stringify(defaultSettings));
+                }
+            }
+
+            generateId() {
+                return 'hn_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+
+            getUsers() {
+                return JSON.parse(localStorage.getItem('hunterNet_users') || '{}');
+            }
+
+            saveUsers(users) {
+                localStorage.setItem('hunterNet_users', JSON.stringify(users));
+            }
+
+            getThreads() {
+                return JSON.parse(localStorage.getItem('hunterNet_threads') || '[]');
+            }
+
+            saveThreads(threads) {
+                localStorage.setItem('hunterNet_threads', JSON.stringify(threads));
+            }
+
+            getUserSession() {
+                return sessionStorage.getItem('hunterNet_currentUser');
+            }
+
+            setUserSession(userId) {
+                sessionStorage.setItem('hunterNet_currentUser', userId);
+            }
+
+            clearUserSession() {
+                sessionStorage.removeItem('hunterNet_currentUser');
+            }
+
+            addUser(userData) {
+                const users = this.getUsers();
+                users[userData.id] = userData;
+                this.saveUsers(users);
+                return true;
+            }
+
+            authenticateUser(username, password) {
+                const users = this.getUsers();
+                const user = users[username];
+                return user && user.password === password ? user : null;
+            }
+
+            addThread(threadData) {
+                const threads = this.getThreads();
+                threadData.id = this.generateId();
+                threadData.created = new Date().toISOString();
+                threadData.lastActivity = new Date().toISOString();
+                threadData.posts = threadData.posts || [];
+                threadData.views = 0;
+                threads.unshift(threadData);
+                this.saveThreads(threads);
+                
+                this.incrementUserPosts(threadData.author);
+                return threadData.id;
+            }
+
+            addPost(threadId, postData) {
+                const threads = this.getThreads();
+                const threadIndex = threads.findIndex(t => t.id === threadId);
+                if (threadIndex !== -1) {
+                    postData.id = this.generateId();
+                    postData.created = new Date().toISOString();
+                    threads[threadIndex].posts.push(postData);
+                    threads[threadIndex].lastActivity = new Date().toISOString();
+                    this.saveThreads(threads);
+                    
+                    this.incrementUserPosts(postData.author);
+                    return postData.id;
+                }
+                return null;
+            }
+
+            incrementUserPosts(username) {
+                const users = this.getUsers();
+                if (users[username]) {
+                    users[username].posts = (users[username].posts || 0) + 1;
+                    this.saveUsers(users);
+                }
+            }
+
+            getThread(threadId) {
+                const threads = this.getThreads();
+                const thread = threads.find(t => t.id === threadId);
+                if (thread) {
+                    thread.views = (thread.views || 0) + 1;
+                    this.saveThreads(threads);
+                }
+                return thread;
+            }
+
+            getThreadsByCategory(category) {
+                return this.getThreads().filter(t => t.category === category);
+            }
+        }
+
+        // Initialize storage system
+        const storage = new HunterNetStorage();
+        let currentUser = null;
+        let challengeUser = null;
+        let currentThread = null;
+
+        // Matrix rain animation
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const bg = document.getElementById('matrix-bg');
+            
+            bg.innerHTML = '';
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.zIndex = '-1';
+            
+            bg.appendChild(canvas);
+
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEF';
+            const charArray = chars.split('');
+            
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(0);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#003300';
+                ctx.font = fontSize + 'px Courier New';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            const matrixInterval = setInterval(draw, 50);
+            bg.matrixInterval = matrixInterval;
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const panel = document.getElementById('notification-panel');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.addEventListener('click', () => {
+                notification.remove();
+            });
+            
+            panel.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Authentication tab switching
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(`${tab}-form`).classList.add('active');
+        }
+
+        // Login form handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionUser = storage.getUserSession();
+            if (sessionUser) {
+                const users = storage.getUsers();
+                if (users[sessionUser]) {
+                    currentUser = sessionUser;
+                    showHunterNet();
+                    showNotification('Session restored - Welcome back', 'success');
+                    return;
+                }
+            }
+
+            document.getElementById('gateway-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                const user = storage.authenticateUser(username, password);
+                if (user) {
+                    challengeUser = username;
+                    document.getElementById('challenge-question').textContent = user.challenge;
+                    document.getElementById('challenge-section').classList.remove('hidden');
+                    showNotification('Security challenge required', 'info');
+                } else {
+                    showNotification('Invalid credentials', 'error');
+                }
+            });
+
+            document.getElementById('registration-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const handle = document.getElementById('reg-handle').value.trim();
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('reg-password-confirm').value;
+                const question = document.getElementById('reg-challenge-q').value;
+                const answer = document.getElementById('reg-answer').value.trim();
+                const location = document.getElementById('reg-location').value.trim();
+                
+                const users = storage.getUsers();
+                if (users[handle]) {
+                    showNotification('Handle already exists', 'error');
+                    return;
+                }
+                
+                if (!/^[a-zA-Z0-9]+$/.test(handle)) {
+                    showNotification('Handle must be alphanumeric only', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                if (!question || !answer) {
+                    showNotification('Security question and answer are required', 'error');
+                    return;
+                }
+                
+                const userData = {
+                    id: handle,
+                    password: password,
+                    challenge: question,
+                    answer: answer.toLowerCase(),
+                    cred: 0,
+                    posts: 0,
+                    location: location,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    lastActive: new Date().toISOString(),
+                    role: 'user'
+                };
+                
+                storage.addUser(userData);
+                
+                showNotification('Registration successful! You can now log in.', 'success');
+                
+                document.getElementById('registration-form').reset();
+                switchAuthTab('login');
+                document.querySelector('.auth-tab[onclick*="login"]').click();
+            });
+
+            createMatrixRain();
+        });
+
+        function verifyChallenge() {
+            const answer = document.getElementById('challenge-answer').value.toLowerCase().trim();
+            const users = storage.getUsers();
+            const correctAnswer = users[challengeUser].answer.toLowerCase();
+            
+            if (answer === correctAnswer) {
+                currentUser = challengeUser;
+                storage.setUserSession(currentUser);
+                
+                users[currentUser].lastActive = new Date().toISOString();
+                storage.saveUsers(users);
+                
+                showHunterNet();
+                showNotification('Welcome to Hunter-Net', 'success');
+            } else {
+                showNotification('Security challenge failed', 'error');
+                document.getElementById('challenge-section').classList.add('hidden');
+                challengeUser = null;
+            }
+        }
+
+        function showHunterNet() {
+            const users = storage.getUsers();
+            const user = users[currentUser];
+            
+            document.getElementById('decoy-site').style.display = 'none';
+            document.getElementById('hunter-app').style.display = 'block';
+            document.getElementById('current-user').textContent = currentUser;
+            document.getElementById('user-cred').textContent = user.cred;
+            document.getElementById('user-posts').textContent = user.posts;
+            
+            loadForumData();
+            showForumIndex();
+        }
+
+        function logout() {
+            storage.clearUserSession();
+            currentUser = null;
+            challengeUser = null;
+            currentThread = null;
+            
+            document.getElementById('decoy-site').style.display = 'block';
+            document.getElementById('hunter-app').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('challenge-answer').value = '';
+            document.getElementById('challenge-section').classList.add('hidden');
+            showNotification('Disconnected from Hunter-Net', 'info');
+        }
+
+        function loadForumData() {
+            loadThreadList();
+            updateStats();
+        }
+
+        function loadThreadList() {
+            const threads = storage.getThreads();
+            
+            const mainThreads = threads.filter(t => t.category === 'main');
+            const sightingThreads = threads.filter(t => t.category === 'sightings');
+            const intelThreads = threads.filter(t => t.category === 'intel');
+            
+            loadThreadsToContainer(mainThreads, 'main-threads');
+            loadThreadsToContainer(sightingThreads, 'sighting-threads');
+            loadThreadsToContainer(intelThreads, 'intel-threads');
+        }
+
+        function loadThreadsToContainer(threads, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            threads.sort((a, b) => {
+                if (a.sticky && !b.sticky) return -1;
+                if (!a.sticky && b.sticky) return 1;
+                return new Date(b.lastActivity) - new Date(a.lastActivity);
+            });
+            
+            threads.forEach(thread => {
+                const row = document.createElement('tr');
+                if (thread.sticky) row.classList.add('sticky-thread');
+                if (thread.locked) row.classList.add('locked-thread');
+                
+                const signalHtml = thread.signal ? `<span class="thread-signal ${thread.signal}">${thread.signal}</span>` : '';
+                const postCount = (thread.posts ? thread.posts.length : 0) + 1;
+                const lastActivity = formatTimeAgo(thread.lastActivity);
+                const lastPoster = thread.posts && thread.posts.length > 0 ? 
+                    thread.posts[thread.posts.length - 1].author : thread.author;
+                
+                row.innerHTML = `
+                    <td>
+                        ${signalHtml}<a href="#" class="thread-title" onclick="viewThread('${thread.id}')">${thread.title}</a>
+                        <div class="thread-meta">Started by ${thread.author} - ${formatDate(thread.created)}</div>
+                    </td>
+                    <td class="post-count">${postCount}</td>
+                    <td class="post-count">${thread.views || 0}</td>
+                    <td class="last-post">
+                        ${lastActivity}<br>
+                        <a href="#" onclick="viewThread('${thread.id}')">${lastPoster}</a>
+                    </td>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+
+        function updateStats() {
+            const threads = storage.getThreads();
+            const mainThreads = threads.filter(t => t.category === 'main');
+            const sightingThreads = threads.filter(t => t.category === 'sightings');
+            const intelThreads = threads.filter(t => t.category === 'intel');
+            
+            document.getElementById('main-thread-count').textContent = mainThreads.length;
+            document.getElementById('sighting-thread-count').textContent = sightingThreads.length;
+            document.getElementById('intel-thread-count').textContent = intelThreads.length;
+            
+            const mainPosts = mainThreads.reduce((sum, thread) => sum + (thread.posts ? thread.posts.length : 0) + 1, 0);
+            const sightingPosts = sightingThreads.reduce((sum, thread) => sum + (thread.posts ? thread.posts.length : 0) + 1, 0);
+            const intelPosts = intelThreads.reduce((sum, thread) => sum + (thread.posts ? thread.posts.length : 0) + 1, 0);
+            
+            document.getElementById('main-post-count').textContent = mainPosts;
+            document.getElementById('sighting-post-count').textContent = sightingPosts;
+            document.getElementById('intel-post-count').textContent = intelPosts;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            
+            return formatDate(dateString);
+        }
+
+        function showForumIndex() {
+            document.querySelectorAll('#hunter-app > main > div').forEach(el => el.style.display = 'none');
+            
+            document.getElementById('forum-index').style.display = 'block';
+            document.getElementById('breadcrumb').innerHTML = '<a href="#" onclick="showForumIndex()">Hunter-Net</a>';
+            
+            loadForumData();
+        }
+
+        function viewThread(threadId) {
+            const thread = storage.getThread(threadId);
+            if (!thread) {
+                showNotification('Thread not found', 'error');
+                return;
+            }
+            
+            currentThread = thread;
+            showThreadView(thread);
+        }
+
+        function showThreadView(thread) {
+            document.getElementById('forum-index').style.display = 'none';
+            
+            let threadView = document.getElementById('thread-view');
+            if (!threadView) {
+                threadView = document.createElement('div');
+                threadView.id = 'thread-view';
+                document.querySelector('.forum-container').appendChild(threadView);
+            }
+            
+            threadView.style.display = 'block';
+            threadView.innerHTML = createThreadViewHTML(thread);
+            
+            const categoryName = getCategoryDisplayName(thread.category);
+            document.getElementById('breadcrumb').innerHTML = `
+                <a href="#" onclick="showForumIndex()">Hunter-Net</a> &gt; 
+                <a href="#" onclick="showForumIndex()">${categoryName}</a> &gt; 
+                <span>${thread.title}</span>
+            `;
+        }
+
+        function getCategoryDisplayName(category) {
+            switch(category) {
+                case 'main': return 'Main Discussion Board';
+                case 'sightings': return 'Sighting Reports';
+                case 'intel': return 'Intelligence Database';
+                default: return 'Unknown';
+            }
+        }
+
+        function createThreadViewHTML(thread) {
+            const signalHtml = thread.signal ? `<span class="thread-signal ${thread.signal}">${thread.signal}</span>` : '';
+            
+            let postsHTML = '';
+            
+            postsHTML += createPostHTML({
+                author: thread.author,
+                content: thread.content,
+                created: thread.created,
+                isOriginal: true
+            });
+            
+            if (thread.posts && thread.posts.length > 0) {
+                thread.posts.forEach(post => {
+                    postsHTML += createPostHTML(post);
+                });
+            }
+            
+            return `
+                <div class="back-btn">
+                    <button class="btn btn-secondary" onclick="showForumIndex()">← Back to Forum</button>
+                    <button class="btn" onclick="showNewThreadForm('${thread.category}')">New Thread</button>
+                </div>
+                
+                <div class="thread-view">
+                    <div class="thread-header">
+                        <div class="thread-title-full">
+                            ${signalHtml}${thread.title}
+                        </div>
+                        <div class="thread-info">
+                            Started by <strong>${thread.author}</strong> on ${formatDate(thread.created)} | 
+                            ${thread.views || 0} views | 
+                            ${(thread.posts ? thread.posts.length : 0) + 1} posts
+                        </div>
+                    </div>
+                    
+                    ${postsHTML}
+                </div>
+                
+                <div class="quick-reply">
+                    <h4>Quick Reply</h4>
+                    <form onsubmit="submitReply(event, '${thread.id}')">
+                        <div class="form-group">
+                            <textarea id="reply-content" placeholder="Enter your reply..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Post Reply</button>
+                    </form>
+                </div>
+            `;
+        }
+
+        function createPostHTML(post) {
+            const users = storage.getUsers();
+            const user = users[post.author] || {};
+            const userBadge = getUserBadgeHTML(user.role);
+            const avatar = post.author.charAt(0).toUpperCase();
+            const isOnline = isUserOnline(user.lastActive);
+            
+            return `
+                <div class="post">
+                    <div class="post-sidebar">
+                        <div class="post-author">${post.author}${userBadge}</div>
+                        <div class="user-avatar">${avatar}</div>
+                        <div class="post-user-info">
+                            <div><span class="online-status ${isOnline ? '' : 'offline'}"></span>${isOnline ? 'Online' : 'Offline'}</div>
+                            <div>Posts: ${user.posts || 0}</div>
+                            <div>Cred: ${user.cred || 0}</div>
+                            <div>Location: ${user.location || 'Unknown'}</div>
+                            <div>Joined: ${user.joinDate || 'Unknown'}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-header">
+                            <span>Posted: ${formatDate(post.created)}</span>
+                            ${post.edited ? `<span>(Edited: ${formatDate(post.edited)})</span>` : ''}
+                        </div>
+                        <div class="post-body">${post.content}</div>
+                        <div class="post-actions">
+                            <a href="#" onclick="quotePost('${post.author}', \`${post.content.replace(/`/g, '\\`')}\`)">Quote</a>
+                            ${post.author === currentUser ? '<a href="#" onclick="editPost()">Edit</a>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getUserBadgeHTML(role) {
+            switch(role) {
+                case 'admin': return '<span class="user-badge admin">ADMIN</span>';
+                case 'moderator': return '<span class="user-badge mod">MOD</span>';
+                default: return '';
+            }
+        }
+
+        function isUserOnline(lastActive) {
+            if (!lastActive) return false;
+            const now = new Date();
+            const lastActiveDate = new Date(lastActive);
+            const diffMinutes = (now - lastActiveDate) / (1000 * 60);
+            return diffMinutes < 15;
+        }
+
+        function submitReply(event, threadId) {
+            event.preventDefault();
+            
+            const content = document.getElementById('reply-content').value.trim();
+            if (!content) {
+                showNotification('Reply cannot be empty', 'error');
+                return;
+            }
+            
+            const postData = {
+                author: currentUser,
+                content: content
+            };
+            
+            const postId = storage.addPost(threadId, postData);
+            if (postId) {
+                showNotification('Reply posted successfully', 'success');
+                document.getElementById('reply-content').value = '';
+                
+                const updatedThread = storage.getThreads().find(t => t.id === threadId);
+                if (updatedThread) {
+                    currentThread = updatedThread;
+                    showThreadView(updatedThread);
+                }
+                
+                const users = storage.getUsers();
+                document.getElementById('user-posts').textContent = users[currentUser].posts;
+            } else {
+                showNotification('Failed to post reply', 'error');
+            }
+        }
+
+        function quotePost(author, content) {
+            const textarea = document.getElementById('reply-content');
+            const quote = `[quote=${author}]\n${content}\n[/quote]\n\n`;
+            textarea.value = quote + textarea.value;
+            textarea.focus();
+        }
+
+        function showNewThreadForm(category = 'main') {
+            document.querySelectorAll('#hunter-app > main > div').forEach(el => el.style.display = 'none');
+            
+            let newThreadForm = document.getElementById('new-thread-form');
+            if (!newThreadForm) {
+                newThreadForm = document.createElement('div');
+                newThreadForm.id = 'new-thread-form';
+                document.querySelector('.forum-container').appendChild(newThreadForm);
+            }
+            
+            newThreadForm.style.display = 'block';
+            newThreadForm.innerHTML = createNewThreadFormHTML(category);
+            
+            const categoryName = getCategoryDisplayName(category);
+            document.getElementById('breadcrumb').innerHTML = `
+                <a href="#" onclick="showForumIndex()">Hunter-Net</a> &gt; 
+                <a href="#" onclick="showForumIndex()">${categoryName}</a> &gt; 
+                <span>New Thread</span>
+            `;
+        }
+
+        function createNewThreadFormHTML(category) {
+            const signalOptions = getSignalOptions(category);
+            
+            return `
+                <div class="back-btn">
+                    <button class="btn btn-secondary" onclick="showForumIndex()">← Back to Forum</button>
+                </div>
+                
+                <div class="compose-form">
+                    <h3>Create New Thread</h3>
+                    <form onsubmit="submitNewThread(event, '${category}')">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="thread-title">Thread Title:</label>
+                                <input type="text" id="thread-title" required maxlength="100" placeholder="Enter thread title">
+                            </div>
+                            <div class="form-group">
+                                <label for="thread-signal">Signal Type:</label>
+                                <select id="thread-signal">
+                                    <option value="">No Signal</option>
+                                    ${signalOptions}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="thread-content">Message:</label>
+                            <textarea id="thread-content" required minlength="10" placeholder="Enter your message..."></textarea>
+                        </div>
+                        <button type="submit" class="btn">Create Thread</button>
+                    </form>
+                </div>
+            `;
+        }
+
+        function getSignalOptions(category) {
+            const signals = {
+                'main': [],
+                'sightings': ['sighting', 'caution', 'request-aid'],
+                'intel': ['intel', 'after-action', 'caution']
+            };
+            
+            return (signals[category] || []).map(signal => 
+                `<option value="${signal}">${signal.toUpperCase().replace('-', ' ')}</option>`
+            ).join('');
+        }
+
+        function submitNewThread(event, category) {
+            event.preventDefault();
+            
+            const title = document.getElementById('thread-title').value.trim();
+            const signal = document.getElementById('thread-signal').value;
+            const content = document.getElementById('thread-content').value.trim();
+            
+            if (!title || !content) {
+                showNotification('Title and content are required', 'error');
+                return;
+            }
+            
+            const threadData = {
+                title: title,
+                author: currentUser,
+                category: category,
+                content: content,
+                signal: signal || null,
+                sticky: false,
+                locked: false
+            };
+            
+            const threadId = storage.addThread(threadData);
+            if (threadId) {
+                showNotification('Thread created successfully', 'success');
+                
+                const users = storage.getUsers();
+                document.getElementById('user-posts').textContent = users[currentUser].posts;
+                
+                viewThread(threadId);
+            } else {
+                showNotification('Failed to create thread', 'error');
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            const bg = document.getElementById('matrix-bg');
+            if (bg.matrixInterval) {
+                clearInterval(bg.matrixInterval);
+            }
+            bg.innerHTML = '';
+            createMatrixRain();
+        });
+    </script>
+</body>
+</html>
