@@ -1,5 +1,5 @@
+# === Backend (Node.js API) ===
 services:
-  # === Backend (Node.js API) ===
   - type: web
     name: hunter-forum
     env: node
@@ -10,9 +10,9 @@ services:
       - key: NODE_VERSION
         value: 22.16.0
 
-  # === Frontend (Static Site) ===
-  - type: static
-    name: hunter-forum-static
+# === Frontend (Static Site) ===
+staticSites:
+  - name: hunter-forum-static
     plan: free
-    buildCommand: ""             # No build needed for pure HTML/CSS/JS
-    staticPublishPath: public    # Serve content in /public
+    buildCommand: ""          # No build needed for plain HTML/CSS/JS
+    publishPath: public       # Path to your static files
