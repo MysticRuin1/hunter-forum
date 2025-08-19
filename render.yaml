@@ -11,8 +11,8 @@ services:
         value: 22.16.0
 
   # === Frontend (Static Site) ===
-  - type: web
+  - type: static
     name: hunter-forum-static
-    env: static
+    plan: free
     buildCommand: ""             # No build needed for pure HTML/CSS/JS
-    staticPublishPath: ./public  # Serves content in public/
+    staticPublishPath: public    # Serve content in /public
