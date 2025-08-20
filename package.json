@@ -1,17 +1,24 @@
 {
-  "name": "hunter-forum",
+  "name": "hunternet-monorepo",
+  "private": true,
   "version": "1.0.0",
-  "description": "Hunter-net forum clone",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+  "type": "module",
+  "engines": {
+    "node": ">=18"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "npm run build:client",
+    "build:client": "cd client && npm install && npm run build",
+    "render-build": "npm ci && npm run build:client",
+    "postinstall": "cd client && npm install || true"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "dotenv": "^16.4.5"
+    "morgan": "^1.10.0",
+    "path-to-regexp": "^6.2.2"
   }
 }
